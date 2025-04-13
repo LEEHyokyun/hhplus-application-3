@@ -1,0 +1,134 @@
+서비스 구현 계획
+
+[요구사항]
+- 각 시나리오별 비즈니스 로직개발
+- 단위 테스트 작성
+
+가) 기능 명세
+가-1) 상품 조회
+	[매개변수] 상품 식별자를 받는다.
+	[반환값] 상품의 이름, 가격, 잔여수량을 조회한다.
+	[고려사항] 조회 시점의 상품별 잔여수량이 정확히 일치해야 한다.
+
+가-2) 주문 및 결제
+- 상품 주문
+	[매개변수] 사용자 식별자, 상품 식별자를 받는다.
+	[반환값] 상품의 이름, 가격, 잔여수량을 조회한다.
+	[추가기능] 상품 주문 후 주문이력을 기록한다.
+	[고려사항] 주문 시점에서 잔여수량이 없을 경우 주문을 할 수 없다.
+	[고려사항] 동시 주문이 발생하였을때 상품별 잔여수량을 정확히 반영해야 한다.
+- 상품 체결(결제)
+	[매개변수] 사용자 식별자, 상품 식별자를 받는다.
+	[반환값] 사용자의 잔액을 조회한다.
+	[추가기능] 상품 결제 후 결제이력을 기록한다.
+	[고려사항] 결제 시점에서 잔여금액이 없을 경우 결제를 할 수 없다.
+	[고려사항] 결제 시 오류가 발생하였을 경우 모든 트랜잭션을 롤백한다.
+- 상품 잔여 수량 및 잔액 조회
+
+가-3) 잔액 충전
+	[매개변수] 사용자 식별자 및 충전 금액을 받는다.
+	[반환값] 잔액을 충전한다. 
+	[추가기능] 잔액 충전 후 충전이력을 기록한다.
+
+나) 프로젝트 구성 방안
+/server
+	/interfaces
+		/api
+			/user
+			/point
+			/product
+			/productsales
+			/history
+				/pointhistory
+				/producthistory
+
+	/application
+		/facade
+			/user
+			/point
+			/product
+			/productsales
+			/history
+				/pointhistory
+				/producthistory
+	/domain
+		/service
+			/user
+			/point
+			/product
+			/productsales
+			/history
+				/pointhistory
+				/producthistory
+		/repository
+			/user
+			/point
+			/product
+			/productsales
+			/history
+				/pointhistory
+				/producthistory
+		/model
+			/user
+			/point
+			/product
+			/productsales
+			/history
+				/pointhistory
+				/producthistory
+	/infrastructure
+		/repositoryjpaImpl
+			/user
+			/point
+			/product
+			/productsales
+			/history
+				/pointhistory
+				/producthistory
+		/domainjparepository
+			/user
+			/point
+			/product
+			/productsales
+			/history
+				/pointhistory
+				/producthistory
+		/mybatis
+			/user
+			/point
+			/product
+			/productsales
+			/history
+				/pointhistory
+				/producthistory
+나-1) 세부설명
+- interfaces : api를 제공하는 controller 계층이며, facade와 1:1관계를 가지며 동일 계층으로 간주
+- application : 서비스로직을 제공하는 service(usecase 및 facade) 계층(*integration test 대상)
+- domain : 서비스로직을 제공하기 위해 단위 도메인 서비스(컴포넌트)를 제공하는 계층 (*unit test 대상) 
+	- service : 단위 도메인 서비스 로직
+	- repository : 서비스에서 유일한 의존하는 repository 계층
+- infrastructrue : 
+	- repository 계층을 정의하는 repositoryJpaImpl class (implements Repository)
+	- 실제 구현체 DomainJpaRepository (extends JpaRepository) interface
+	- JPA 구현이 힘들경우 mybatis 활용(*DomainJpaRepository와 동일한 계층으로 간주하여 infrastructure에 위치)
+
+실제 구현을 진행하면서 각 위치 및 계층구조는 변경 가능
+
+다) 구현과정
+다-1) DTO
+- 일단 DTO는 생각하지 말고 매개변수와 반환값을 기준으로 구현하되, 일단 domain별 서비스는 각 DTO를 사용하는 것으로 생각
+- 다만 각 domain별 Repository 등 사용하는 DTO는 각 domain별로 사용하는 DTO로 정의
+- 그 후 의존관계를 최소화할 수 있는 방안을 생각(Controller부터 상위계층까지 
+- 각 domain별 command 사용할때 파사드에서 서비스를 사용하는 단계에서 command를 사용하여 변환 후 전달
+(*다른 계층에서의 의존성은 최소화하고, 파사드 단계에서 최대한 책임이 이루어질 수 있도록)
+다-2) facade
+- api와 1:1관계를 지니며 하위 서비스를 통합하여 제공하는 도구로, controller의 api와 의존관계를 지니기에 해당 계층와 동일한 layer으로 간주
+- 조합하는 layer가 필요할 경우에만 선택적 사용
+- application 하위의 facade layer로 구성
+- 파사드에서 행위의 중심이 되는 도메인을 명명규칙으로 설정하며, 최대한 설계한 도메인과 일치하도록 구성
+다-3) 단위테스트 구성 시 서비스 단위 테스트와 DB 단위 테스트는 목적이 다르므로 별도로 구성
+다-4) JpaImpl 대신에 mybatis로 구성
+
+라) 고민방안
+- server api 단계에서 (Presentation와 상호작용하는 계층) Request, Response를 단일 Entity로 사용하는 방안
+- 파사드 계층에서 command를 통해 변환한 model을 Repository에 전달

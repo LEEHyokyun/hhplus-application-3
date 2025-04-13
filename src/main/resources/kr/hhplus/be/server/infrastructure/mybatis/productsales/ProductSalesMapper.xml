@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.hhplus.be.server.infrastructure.mybatis.productsales">
+  <select id="search" resultType="ProductSalesDTO">
+    SELECT PRODUCT_NAME
+	FROM PRODUCT_HISTORY A
+	INNER JOIN PRODUCT_SALES B
+	ON A.PRODUCT_ID = B.PRODUCT_ID
+	INNER JOIN PRODUCT C
+	ON A.PRODUCT_ID = C.PRODUCT_ID
+	WHERE A.CREATED_TIME BETWEEN ADD_DATE(SYSDATE, -3) AND SYSDATE
+  </select>
+</mapper>
