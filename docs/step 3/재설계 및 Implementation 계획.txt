@@ -1,0 +1,96 @@
+재설계 및 Implementation 계획
+
+[요구사항]
+- 프로젝트 확장성 및 가독성을 고려하여 domain 중심의 계층구조화 한다.
+- 기능을 명세하기 위한 도메인을 재분류한다.
+- 단위 테스트 작성 및 Implementation을 작성한다.
+
+가) 기능 명세
+가-1) [Product] 상품 조회
+	[매개변수] 상품 식별자를 받는다.
+	[반환값] 상품의 이름, 가격, 잔여수량을 조회한다.
+	[고려사항] 조회 시점의 상품별 잔여수량이 정확히 일치해야 한다.
+
+가-2) 주문 및 결제
+- [Order] 상품 주문
+	[매개변수] 사용자 식별자, 상품 식별자를 받는다.
+	[반환값] 상품의 이름, 가격, 잔여수량을 조회한다.
+	[추가기능] 상품 주문 후 주문이력을 기록한다.
+	[고려사항] 주문 시점에서 잔여수량이 없을 경우 주문을 할 수 없다.
+	[고려사항] 동시 주문이 발생하였을때 상품별 잔여수량을 정확히 반영해야 한다.
+- [Pay] 상품 체결(결제)
+	[매개변수] 사용자 식별자, 상품 식별자를 받는다.
+	[반환값] 사용자의 잔액을 조회한다.
+	[추가기능] 상품 결제 후 결제이력을 기록한다.
+	[고려사항] 결제 시점에서 잔여금액이 없을 경우 결제를 할 수 없다.
+	[고려사항] 결제 시 오류가 발생하였을 경우 모든 트랜잭션을 롤백한다.
+- [Product] 상품 잔여 수량 조회
+- [Point] 잔액 조회
+
+가-3) 잔액 충전
+	[매개변수] 사용자 식별자 및 충전 금액을 받는다.
+	[반환값] 잔액을 충전한다. 
+	[추가기능] 잔액 충전 후 충전이력을 기록한다.
+
+나) 프로젝트 구성 방안
+/server
+	/order
+		/interfaces
+		/application
+			/facade
+			/mapper
+		/domain
+			/service
+			/JpaRepository
+			/JpaImpl
+		/infra
+			/rdb
+	/coupon
+		/interfaces
+		/application
+		/domain
+		/infra
+
+			/nosql
+	/point
+		/interfaces
+		/application
+		/domain
+
+나-1) 세부설명
+- layer driven이 아닌 domain driven 구조를 채택하여 시스템 확장의 용이성 및 도메인 분류에 대한 합리성을 확보
+- 각 도메인별 일관된 구조를 구축하고 
+- interfaces : api를 제공하는 controller 계층이며, facade와 1:1관계를 가지며 동일 계층으로 간주
+- application : 서비스로직을 조합하는 facade 계층 및 협력객체 간의 변환(mapper)를 제공한다.
+	- mapper : 각 의존관계에 있는 DTO를 중심 도메인 혹은 책임이 있는 도메인 내 mapper를 통해 변환이 이루어질 수 있도록 구성
+- domain : 서비스로직을 제공하기 위해 단위 도메인 서비스(컴포넌트)를 제공하는 계층 (*unit test 대상) 
+	- service : 단위 도메인 서비스 로직
+	- repository : 서비스에서 유일한 의존하는 repository 계층
+- infrastructrue : 
+	- repository 계층을 정의하는 repositoryJpaImpl class (implements Repository)
+	- 실제 구현체 DomainJpaRepository (extends JpaRepository) interface
+	- JPA 구현이 힘들경우(테이블 간 연결이 많은 복잡한 쿼리) mybatis 활용(*DomainJpaRepository와 동일한 계층으로 간주하여 infrastructure에 위치)
+
+실제 구현을 진행하면서 각 위치 및 계층구조는 변경 가능
+
+다) 구현과정
+다-1) DTO
+- 데이터를 전달해주는 객체
+- DTO를 받는 입장에서는 이미 받는 상태이므로 입력값에 대한 검증은 DTO에서 이루어져야 한다.
+
+다-2) facade
+- api와 1:1관계를 지니며 하위 서비스를 통합하여 제공하는 도구로, controller의 api와 의존관계를 지니기에 해당 계층와 동일한 layer으로 간주
+- 조합하는 layer가 필요할 경우에만 선택적 사용
+- application 하위의 facade layer로 구성
+- 파사드에서 행위의 중심이 되는 도메인을 명명규칙으로 설정하며, 최대한 설계한 도메인과 일치하도록 구성
+
+다-3) 단위테스트 구성 시 서비스 단위 테스트로 구성하며, 서비스 내에 다중 서비스를 호출한다면 각 서비스를 단위 테스트 적용한다.
+- point 충전 및 결제 후 history 기록은 별도 도메인으로 구성하지 않고 하나의 도메인으로 구성하여도 무방하다.
+
+다-4) DB와의 상호작용은 별도로 테스트할 필요는 없다.
+
+다-5) JpaImpl 구성 및 복잡한 조회쿼리에 한해 mybatis로 구성
+
+라) 고민방안
+- domain DTO, JPA Entity는 서로 다른 개념이자 목적이 다르다.
+- mapper, snapshot 적용
