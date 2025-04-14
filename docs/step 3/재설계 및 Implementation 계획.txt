@@ -36,6 +36,19 @@
 /server
 	/order
 		/interfaces
+			/controller
+		/application
+			/facade
+			/mapper
+		/domain
+			/service
+			/JpaRepository
+			/JpaImpl
+		/infra
+			/rdb
+	/product
+		/interfaces
+			/controller
 		/application
 			/facade
 			/mapper
@@ -47,15 +60,22 @@
 			/rdb
 	/coupon
 		/interfaces
+			/controller
 		/application
+			/facade
+			/mapper
 		/domain
 		/infra
-
 			/nosql
 	/point
 		/interfaces
+			/controller
 		/application
+			/facade
+			/mapper
 		/domain
+		/infra
+			/nosql
 
 나-1) 세부설명
 - layer driven이 아닌 domain driven 구조를 채택하여 시스템 확장의 용이성 및 도메인 분류에 대한 합리성을 확보
