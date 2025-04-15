@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 import kr.hhplus.be.server.point.domain.model.PointDTO;
 import kr.hhplus.be.server.user.domain.entity.User;
+import kr.hhplus.be.server.user.domain.entity.UserHistory;
 
 /*
  * 상태변환매개체 : VO의 범주
@@ -19,4 +20,7 @@ public class UserMapper {
 		return User.standardUserEntityOf(pointDTO.getUserId(), "", pointDTO.getPoint(), Timestamp.valueOf(String.valueOf(System.currentTimeMillis())), Timestamp.valueOf(String.valueOf(System.currentTimeMillis())));
 	}
 	
+	public static UserHistory toUserHistoryEntityFromPointDomain(PointDTO pointDTO, String transactionType) {
+		return UserHistory.standardUserHistoryEntityOf(pointDTO.getUserId(), "", pointDTO.getPoint(), transactionType, Timestamp.valueOf(String.valueOf(System.currentTimeMillis())), Timestamp.valueOf(String.valueOf(System.currentTimeMillis())));
+	}
 }
