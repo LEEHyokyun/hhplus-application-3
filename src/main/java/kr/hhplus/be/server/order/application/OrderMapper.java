@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import kr.hhplus.be.server.order.domain.entity.Order;
 import kr.hhplus.be.server.order.domain.entity.OrderHistory;
 import kr.hhplus.be.server.order.domain.model.OrderDTO;
+import kr.hhplus.be.server.point.domain.model.PointDTO;
 
 /*
  * 상태변환매개체 : VO의 범주
@@ -22,5 +23,9 @@ public class OrderMapper {
 	
 	public static OrderHistory toOrderHistoryEntityFromOrderDomain(OrderDTO orderDTO) {
 		return OrderHistory.standardOrderHistoryEntityOf(orderDTO.getOrderId(), orderDTO.getOrderId(), orderDTO.getUserId(), Timestamp.valueOf(String.valueOf(System.currentTimeMillis())), Timestamp.valueOf(String.valueOf(System.currentTimeMillis())));
+	}
+	
+	public static PointDTO toPointDomainFromOrderDomain(OrderDTO orderDTO) throws Exception {
+		return PointDTO.standardPointDTOOf(orderDTO.getUserId(), orderDTO.getOrderQuantity());
 	}
 }
