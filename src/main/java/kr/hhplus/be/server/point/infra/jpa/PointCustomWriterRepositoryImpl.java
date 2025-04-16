@@ -7,8 +7,8 @@ import kr.hhplus.be.server.point.domain.type.TransactionType;
 import kr.hhplus.be.server.user.application.UserMapper;
 import kr.hhplus.be.server.user.domain.entity.User;
 import kr.hhplus.be.server.user.domain.entity.UserHistory;
-import kr.hhplus.be.server.user.infra.UserHistoryWriterRepository;
-import kr.hhplus.be.server.user.infra.UserWriterRepository;
+import kr.hhplus.be.server.user.infra.jpa.UserHistoryWriterRepository;
+import kr.hhplus.be.server.user.infra.jpa.UserWriterRepository;
 
 public class PointCustomWriterRepositoryImpl implements PointCustomWriterRepository{
 	

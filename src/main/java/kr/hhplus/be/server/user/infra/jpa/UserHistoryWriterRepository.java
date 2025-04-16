@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.user.infra;
+package kr.hhplus.be.server.user.infra.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

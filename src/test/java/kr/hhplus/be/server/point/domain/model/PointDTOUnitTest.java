@@ -1,4 +1,4 @@
-package kr.hhplus.be.serve.point.domain.model;
+package kr.hhplus.be.server.point.domain.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

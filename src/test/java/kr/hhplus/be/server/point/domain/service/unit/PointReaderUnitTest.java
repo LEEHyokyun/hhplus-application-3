@@ -6,8 +6,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import annotation.UnitTest;
 import kr.hhplus.be.server.point.domain.service.PointReaderService;
 
+@UnitTest
 public class PointReaderUnitTest {
 	
 	@Autowired
