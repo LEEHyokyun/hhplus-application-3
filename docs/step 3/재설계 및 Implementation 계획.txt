@@ -53,18 +53,6 @@
 			/facade
 			/mapper
 		/domain
-			/service
-			/JpaRepository
-			/JpaImpl
-		/infra
-			/rdb
-	/coupon
-		/interfaces
-			/controller
-		/application
-			/facade
-			/mapper
-		/domain
 		/infra
 			/nosql
 	/point
@@ -79,6 +67,19 @@
 
 나-1) 세부설명
 - layer driven이 아닌 domain driven 구조를 채택하여 시스템 확장의 용이성 및 도메인 분류에 대한 합리성을 확보
+=======
+		/application
+		/domain
+		/infra
+
+			/nosql
+	/point
+		/interfaces
+		/application
+		/domain
+
+나-1) 세부설명
+- layer driven이 아닌 domain driven 구조를 채택하여 시스템 확장의 용이성 및 도메인 분류에 대한 합리성을 확보.
 - 각 도메인별 일관된 구조를 구축하고 
 - interfaces : api를 제공하는 controller 계층이며, facade와 1:1관계를 가지며 동일 계층으로 간주
 - application : 서비스로직을 조합하는 facade 계층 및 협력객체 간의 변환(mapper)를 제공한다.
