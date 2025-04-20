@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="product.infra.mybatis">
+  <select id="searchHotSaled" resultType="Product">
+    SELECT A.ORDER_QUANTITY
+          ,B.PRODUCT_NAME 
+          ,B.PRODUCT_PRICE
+    FROM ORDER A
+    INNER JOIN PRODUCT B
+    ON A.PRODUCT_ID = B.PRODUCT_ID
+    WHERE 1=1
+      AND A.CREATED_AT BETWEEN TO_CHAR(ADD_DAYS(TO_CHAR(SYSDATE, 'YYYYMMDD'),-3),'YYYYMMDD') AND TO_CHAR(SYSDATE, 'YYYYMMDD')
+      AND ROWNUM <![CDATA[<= 5]> 
+  </select>
+</mapper>
