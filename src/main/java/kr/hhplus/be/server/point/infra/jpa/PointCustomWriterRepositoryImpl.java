@@ -2,6 +2,8 @@ package kr.hhplus.be.server.point.infra.jpa;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
 import kr.hhplus.be.server.point.domain.model.PointDTO;
 import kr.hhplus.be.server.point.domain.type.TransactionType;
 import kr.hhplus.be.server.user.application.UserMapper;
@@ -11,6 +13,9 @@ import kr.hhplus.be.server.user.infra.jpa.UserHistoryWriterRepository;
 import kr.hhplus.be.server.user.infra.jpa.UserWriterRepository;
 
 public class PointCustomWriterRepositoryImpl implements PointCustomWriterRepository{
+	
+	@Autowired
+	private EntityManager entityManager;
 	
 	//private final JPAQueryFactory jpaQueryFactory;
 	@Autowired
@@ -43,16 +48,35 @@ public class PointCustomWriterRepositoryImpl implements PointCustomWriterReposit
 	public void charge(PointDTO pointDTO) {
 		
 		//point entity
-		PointDTO pointEntity = new PointDTO.PointBuilder(pointReaderRepository.findByUserId(pointDTO.getUserId()))
-										.setChargedPointBuilder(pointDTO.getPoint())
-										.build();
+//		PointDTO pointEntity = new PointDTO.PointBuilder(pointReaderRepository.findByUserId(pointDTO.getUserId()))
+//										.setChargedPointBuilder(pointDTO.getPoint())
+//										.build();
+		
+		/*
+		 * find하여 불러온 데이터에 비관적 락을 걸어 트랜잭션의 동시 수정을 방지한다.
+		 * */
+		PointDTO pointEntity = entityManager.find(new PointDTO.PointBuilder(pointReaderRepository.findByUserId(pointDTO.getUserId()))
+															  .setChargedPointBuilder(pointDTO.getPoint())
+															  .build().getClass()
+												  , pointDTO.getUserId()
+												  , LockModeType.PESSIMISTIC_WRITE
+												  );
+		
 		
 		//point entity -> user entity
 		User userEntity = UserMapper.toUserEntityFromPointDomain(pointEntity);
-		UserHistory userHistoryEntity = UserMapper.toUserHistoryEntityFromPointDomain(pointDTO, TransactionType.CHARGE.toString());
 		
 		//charge
 		userWriterRepository.save(userEntity);
+		
+		/*
+		 * 이 부분은 동시성 제어 대상이 아님
+		 * 다만 Transactional 어노테이션에 의해 최종적으로 commit 후 lock까지 모두 풀림
+		 * */
+		//point entity -> user history entity
+		UserHistory userHistoryEntity = UserMapper.toUserHistoryEntityFromPointDomain(pointDTO, TransactionType.CHARGE.toString());
+		
+		//insert
 		userWriterHistoryRepository.save(userHistoryEntity);
 
 	}
