@@ -47,25 +47,30 @@ public class PointCustomWriterRepositoryImpl implements PointCustomWriterReposit
 	@Override
 	public void charge(PointDTO pointDTO) {
 		
-		//point entity
-//		PointDTO pointEntity = new PointDTO.PointBuilder(pointReaderRepository.findByUserId(pointDTO.getUserId()))
-//										.setChargedPointBuilder(pointDTO.getPoint())
-//										.build();
-		
 		/*
-		 * find하여 불러온 데이터에 비관적 락을 걸어 트랜잭션의 동시 수정을 방지한다.
+		 * Version이 명시되어 있으므로 트랜잭션 동안 버전관리를 진행한다.
 		 * */
-		PointDTO pointEntity = entityManager.find(new PointDTO.PointBuilder(pointReaderRepository.findByUserId(pointDTO.getUserId()))
-															  .setChargedPointBuilder(pointDTO.getPoint())
-															  .build().getClass()
-												  , pointDTO.getUserId()
-												  , LockModeType.PESSIMISTIC_WRITE
-												  );
+		//point entity
+		PointDTO pointEntity = new PointDTO.PointBuilder(pointReaderRepository.findByUserId(pointDTO.getUserId()))
+										.setChargedPointBuilder(pointDTO.getPoint())
+										.build();
+		
+		
+//		PointDTO pointEntity = entityManager.find(new PointDTO.PointBuilder(pointReaderRepository.findByUserId(pointDTO.getUserId()))
+//															  .setChargedPointBuilder(pointDTO.getPoint())
+//															  .build().getClass()
+//												  , pointDTO.getUserId()
+//												  , LockModeType.PESSIMISTIC_WRITE
+//												  );
 		
 		
 		//point entity -> user entity
 		User userEntity = UserMapper.toUserEntityFromPointDomain(pointEntity);
 		
+		/*
+		 * 데이터를 수정하는 시점에서 버전 변경을 감지할 경우 Exception을 발생하여
+		 * 최초 트랜잭션만 성공, 나머지 트랜잭션은 모두 실패로 처리한다.
+		 * */
 		//charge
 		userWriterRepository.save(userEntity);
 		
