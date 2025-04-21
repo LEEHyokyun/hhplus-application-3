@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import kr.hhplus.be.server.point.domain.model.PointDTO;
 import kr.hhplus.be.server.point.domain.type.TransactionType;
+import kr.hhplus.be.server.point.infra.mybatis.PointReaderMapper;
 import kr.hhplus.be.server.user.application.UserMapper;
 import kr.hhplus.be.server.user.domain.entity.User;
 import kr.hhplus.be.server.user.domain.entity.UserHistory;
@@ -13,6 +14,9 @@ import kr.hhplus.be.server.user.infra.jpa.UserHistoryWriterRepository;
 import kr.hhplus.be.server.user.infra.jpa.UserWriterRepository;
 
 public class PointCustomWriterRepositoryImpl implements PointCustomWriterRepository{
+	
+	@Autowired
+	private PointReaderMapper pointReaderMapper;
 	
 	@Autowired
 	private EntityManager entityManager;
@@ -48,13 +52,13 @@ public class PointCustomWriterRepositoryImpl implements PointCustomWriterReposit
 	public void charge(PointDTO pointDTO) {
 		
 		/*
-		 * Version이 명시되어 있으므로 트랜잭션 동안 버전관리를 진행한다.
+		 * 비관락을 적용한 마이바티스 쿼리를 적용하여 트랜잭션의 원자성을 보장한다.
 		 * */
 		//point entity
-		PointDTO pointEntity = new PointDTO.PointBuilder(pointReaderRepository.findByUserId(pointDTO.getUserId()))
-										.setChargedPointBuilder(pointDTO.getPoint())
-										.build();
-		
+//		PointDTO pointEntity = new PointDTO.PointBuilder(pointReaderRepository.findByUserId(pointDTO.getUserId()))
+//										.setChargedPointBuilder(pointDTO.getPoint())
+//										.build();
+		PointDTO pointEntity =  pointReaderMapper.searchPoint(pointDTO.getUserId());
 		
 //		PointDTO pointEntity = entityManager.find(new PointDTO.PointBuilder(pointReaderRepository.findByUserId(pointDTO.getUserId()))
 //															  .setChargedPointBuilder(pointDTO.getPoint())

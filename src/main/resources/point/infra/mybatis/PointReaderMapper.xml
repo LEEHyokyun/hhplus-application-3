@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="point.infra.mybatis">
+  <select id="searchPoint" resultType="PointDTO">
+    SELECT A.POINT
+    FROM USER A
+    WHERE 1=1
+      AND A.USER_ID = #{userId}
+    for update
+  </select>
+</mapper>
