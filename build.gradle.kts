@@ -56,30 +56,19 @@ dependencies {
     implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4") 
     
     //queryDsl
-    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
-    annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
-    annotationProcessor("jakarta.annotation:jakarta.annotation-api")
-    annotationProcessor("jakarta.persistence:jakarta.persistence-api")
-   
+    //implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    //annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    //annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+    //annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+   	
+   	//spring security
+   	implementation("org.springframework.boot:spring-boot-starter-security")
+    testImplementation("org.springframework.security:spring-security-test")
+    
+    //redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.redisson:redisson-spring-boot-starter:3.27.0")
 }
-
-	// Q타입 클래스 생성 경로
-	def generated = "$buildDir/generated/qclass"
-
-	// QueryDSL QClass 파일 생성 위치 설정
-	tasks.withType(JavaCompile).configureEach {
-    	options.getGeneratedSourceOutputDirectory().set(file(generated))
-	}
-
-	// java source set에 QueryDSL QClass 위치 추가
-	sourceSets {
-    	main.java.srcDirs += [generated]
-	}
-
-	// gradle clean 시 QClass 디렉토리 삭제
-	clean {
-    	delete file(generated)
-	}
 
 tasks.withType<Test> {
 	useJUnitPlatform()

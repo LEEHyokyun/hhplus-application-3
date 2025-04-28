@@ -2,8 +2,11 @@ package kr.hhplus.be.server.point.infra.jpa;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
 import kr.hhplus.be.server.point.domain.model.PointDTO;
 import kr.hhplus.be.server.point.domain.type.TransactionType;
+import kr.hhplus.be.server.point.infra.mybatis.PointReaderMapper;
 import kr.hhplus.be.server.user.application.UserMapper;
 import kr.hhplus.be.server.user.domain.entity.User;
 import kr.hhplus.be.server.user.domain.entity.UserHistory;
@@ -11,6 +14,12 @@ import kr.hhplus.be.server.user.infra.jpa.UserHistoryWriterRepository;
 import kr.hhplus.be.server.user.infra.jpa.UserWriterRepository;
 
 public class PointCustomWriterRepositoryImpl implements PointCustomWriterRepository{
+	
+	@Autowired
+	private PointReaderMapper pointReaderMapper;
+	
+	@Autowired
+	private EntityManager entityManager;
 	
 	//private final JPAQueryFactory jpaQueryFactory;
 	@Autowired
@@ -42,17 +51,41 @@ public class PointCustomWriterRepositoryImpl implements PointCustomWriterReposit
 	@Override
 	public void charge(PointDTO pointDTO) {
 		
+		/*
+		 * 비관락을 적용한 마이바티스 쿼리를 적용하여 트랜잭션의 원자성을 보장한다.
+		 * */
 		//point entity
-		PointDTO pointEntity = new PointDTO.PointBuilder(pointReaderRepository.findByUserId(pointDTO.getUserId()))
-										.setChargedPointBuilder(pointDTO.getPoint())
-										.build();
+//		PointDTO pointEntity = new PointDTO.PointBuilder(pointReaderRepository.findByUserId(pointDTO.getUserId()))
+//										.setChargedPointBuilder(pointDTO.getPoint())
+//										.build();
+		PointDTO pointEntity =  pointReaderMapper.searchPoint(pointDTO.getUserId());
+		
+//		PointDTO pointEntity = entityManager.find(new PointDTO.PointBuilder(pointReaderRepository.findByUserId(pointDTO.getUserId()))
+//															  .setChargedPointBuilder(pointDTO.getPoint())
+//															  .build().getClass()
+//												  , pointDTO.getUserId()
+//												  , LockModeType.PESSIMISTIC_WRITE
+//												  );
+		
 		
 		//point entity -> user entity
 		User userEntity = UserMapper.toUserEntityFromPointDomain(pointEntity);
-		UserHistory userHistoryEntity = UserMapper.toUserHistoryEntityFromPointDomain(pointDTO, TransactionType.CHARGE.toString());
 		
+		/*
+		 * 데이터를 수정하는 시점에서 버전 변경을 감지할 경우 Exception을 발생하여
+		 * 최초 트랜잭션만 성공, 나머지 트랜잭션은 모두 실패로 처리한다.
+		 * */
 		//charge
 		userWriterRepository.save(userEntity);
+		
+		/*
+		 * 이 부분은 동시성 제어 대상이 아님
+		 * 다만 Transactional 어노테이션에 의해 최종적으로 commit 후 lock까지 모두 풀림
+		 * */
+		//point entity -> user history entity
+		UserHistory userHistoryEntity = UserMapper.toUserHistoryEntityFromPointDomain(pointDTO, TransactionType.CHARGE.toString());
+		
+		//insert
 		userWriterHistoryRepository.save(userHistoryEntity);
 
 	}

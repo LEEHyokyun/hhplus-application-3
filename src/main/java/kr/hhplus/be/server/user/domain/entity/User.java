@@ -7,6 +7,7 @@ import org.hibernate.annotations.ColumnDefault;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Version;
 import lombok.Builder.Default;
 import lombok.Data;
 
@@ -24,6 +25,9 @@ public class User {
 	private String userName;
 	
 	private Long point;
+	
+	@Version
+	private Long version;
 	
 	private Timestamp createdAt;
 	
