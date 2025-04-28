@@ -64,6 +64,10 @@ dependencies {
    	//spring security
    	implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.security:spring-security-test")
+    
+    //redis
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.redisson:redisson-spring-boot-starter:3.27.0")
 }
 
 tasks.withType<Test> {
