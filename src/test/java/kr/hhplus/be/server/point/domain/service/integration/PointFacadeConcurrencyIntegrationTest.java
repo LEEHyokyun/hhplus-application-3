@@ -34,8 +34,8 @@ public class PointFacadeConcurrencyIntegrationTest {
 	PointReaderRepository pointReaderRepository;
 	
 	@Test
-	@DisplayName("[통합테스트] 분산락을 통해 다수의 사용자가 포인트 충전 요청을 하는 것을 제어하여 DB 분산을 감소하는 테스트")
-	void chargeTrafficControlTest() {
+	@DisplayName("[통합테스트] 스핀락 테스트")
+	void spinLockTest() {
 		/*
 		 * given
 		 * - 테스트에 사용할 변수 및 입력값을 정의한다.
