@@ -15,6 +15,7 @@
 - Customized 어노테이션
 [어노테이션 구성하기](https://velog.io/@iniestar/Java-interface-class)
 [서비스 단위의 key값 전달](https://velog.io/@meong/SpringBoot-Redisson-AOP-%EC%A0%81%EC%9A%A9%EA%B8%B0-%EC%9E%AC%EA%B3%A0-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%A0%9C%EC%96%B4)
+[매개변수 및 jointpoint의 args를 파싱하여 key값 전달](https://velog.io/@solar/AOP-%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%B4-%EB%A1%9C%EA%B7%B8-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%82%A8%EA%B8%B0%EA%B8%B0)
 [SPEL을 통한 key값 전달](https://velog.io/@daehoon12/%EC%A3%BC%EB%AC%B8-%EC%8B%9C-%EC%9D%BC%EC%96%B4%EB%82%98%EB%8A%94-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%9D%B4%EC%8A%88-%ED%95%B4%EA%B2%B0)
 
 - 트랜잭션 분리(joint - Process)
