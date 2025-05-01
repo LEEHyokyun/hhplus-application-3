@@ -67,16 +67,14 @@ public class DistributedPointLockProxyClass {
         String key = String.valueOf(SpringELParser.getDynamicValue(signature.getParameterNames(), joinPoint.getArgs(), distributedPointLock.key()));
         
         /*
-         * 해당 key 값에 대해 pub/sub 방식으로 분산락 획득을 시도합니다.
-         * - pub : 해당 key값에 대한 이벤트를 리스닝
-         * - sub : 해당 key값에 대한 이벤트 발생 시 반응하여 동작 수행
+         * 지정한 key값에 대한 Redisson 구현체를 구성해줍니다.
          * */
         RLock rLock = redissonClient.getLock(key); 
         
         /*
-         * 락을 먼저 획득한 이후에 tryLock의 이중 안전장치를 구성해줍니다.
-         * - getLock 실패 : 트랜잭션 종료
-         * - getLock 성공 : 트랜잭션을 락 획득 후 트랜잭션 진행
+         * 해당 key 값에 대한 Redisson 구현체를 바탕으로 pub/sub을 진행하여 락 획득을 시도합니다.
+         * - pub : 해당 key값에 대한 이벤트를 리스닝
+         * - sub : 해당 key값에 대한 이벤트 발생 시 반응하여 동작 수행
          * */
         try {
             boolean available = rLock.tryLock(distributedPointLock.waitTime(), distributedPointLock.leaseTime(), distributedPointLock.timeUnit());  // (2)
