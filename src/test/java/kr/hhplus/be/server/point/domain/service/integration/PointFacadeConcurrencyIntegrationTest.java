@@ -30,12 +30,15 @@ public class PointFacadeConcurrencyIntegrationTest {
 	@Autowired
 	PointFacadeWriterService pointFacadeService;
 	
+	@Autowired
+	PointFacadeWriterService pointWriterService;
+	
 	@Mock
 	PointReaderRepository pointReaderRepository;
 	
 	@Test
-	@DisplayName("[통합테스트] 분산락을 통해 다수의 사용자가 포인트 충전 요청을 하는 것을 제어하여 DB 분산을 감소하는 테스트")
-	void chargeTrafficControlTest() {
+	@DisplayName("[통합테스트] 스핀락 테스트")
+	void spinLockTest() {
 		/*
 		 * given
 		 * - 테스트에 사용할 변수 및 입력값을 정의한다.
@@ -62,6 +65,100 @@ public class PointFacadeConcurrencyIntegrationTest {
                 	//서비스 동작에 대한 확인
                     successCount.getAndIncrement();
                     pointFacadeService.charge(PointDTO.standardPointDTOOf(userId, 5L));
+                } catch(Exception e){
+                	
+                }finally {
+                	//Thread 실행 횟수 확인
+                    doneSignal.countDown();
+                }
+	        });
+            
+            /*
+			 * Then
+			 * - 최종적으로 테스트를 검증한다.
+			 * - 테스트 과정을 종합한다.
+			 * */
+	        Long actualPoint = pointReaderRepository.findByUserId(userId).getPoint();
+			assertEquals(expectedPoint, actualPoint);
+		}
+	}
+	
+	@Test
+	@DisplayName("[통합테스트] Redission Lock 테스트 #1 - 별도 redis 도메인 구성 후 파사드 서비스로 구현")
+	void RedissionLockTest_TYPE1_FACADE() {
+		/*
+		 * given
+		 * - 테스트에 사용할 변수 및 입력값을 정의한다.
+		 * - 동작을 확인하기 위한 Mokito 정의도 포함(Database(Repository)의 객체를 Mokito화하여 사용)
+		 * */
+		CountDownLatch doneSignal = new CountDownLatch(MAX_THREAD);
+	    ExecutorService executorService = Executors.newFixedThreadPool(MAX_THREAD);
+	    AtomicInteger successCount = new AtomicInteger();
+	    
+		long userId = 1L;
+		long originalPoint = 25L;
+		long usePoint = 5L;
+		long expectedPoint = 50L;
+		
+		/*
+		 * when
+		 * - 실제 동작이 이루어진다.
+		 * - 동작에 따른 상태 변화를 기억하거나, 대조군으로 활용하기 위한 과정이다.
+		 * - 검증 대상의 동작 하나만 기술한다.
+		 * */
+		for (int i = 0; i < MAX_THREAD; i++) {
+            executorService.execute(() -> {
+                try {
+                	//서비스 동작에 대한 확인
+                    successCount.getAndIncrement();
+                    pointFacadeService.charge(PointDTO.standardPointDTOOf(userId, 5L));
+                } catch(Exception e){
+                	
+                }finally {
+                	//Thread 실행 횟수 확인
+                    doneSignal.countDown();
+                }
+	        });
+            
+            /*
+			 * Then
+			 * - 최종적으로 테스트를 검증한다.
+			 * - 테스트 과정을 종합한다.
+			 * */
+	        Long actualPoint = pointReaderRepository.findByUserId(userId).getPoint();
+			assertEquals(expectedPoint, actualPoint);
+		}
+	}
+	
+	@Test
+	@DisplayName("[통합테스트] Redission Lock 테스트 #2 - distributed lock 어노테이션 및 AOP를 직접적으로 활용하여 구현")
+	void RedissionLockTest_TYPE2_AOP() {
+		/*
+		 * given
+		 * - 테스트에 사용할 변수 및 입력값을 정의한다.
+		 * - 동작을 확인하기 위한 Mokito 정의도 포함(Database(Repository)의 객체를 Mokito화하여 사용)
+		 * */
+		CountDownLatch doneSignal = new CountDownLatch(MAX_THREAD);
+	    ExecutorService executorService = Executors.newFixedThreadPool(MAX_THREAD);
+	    AtomicInteger successCount = new AtomicInteger();
+	    
+		long userId = 1L;
+		long originalPoint = 25L;
+		long usePoint = 5L;
+		long expectedPoint = 50L;
+		
+		/*
+		 * when
+		 * - 실제 동작이 이루어진다.
+		 * - 동작에 따른 상태 변화를 기억하거나, 대조군으로 활용하기 위한 과정이다.
+		 * - 검증 대상의 동작 하나만 기술한다.
+		 * */
+		for (int i = 0; i < MAX_THREAD; i++) {
+            executorService.execute(() -> {
+                try {
+                	//서비스 동작에 대한 확인
+                    successCount.getAndIncrement();
+                    pointWriterService.charge(PointDTO.standardPointDTOOf(userId, 5L));
                 } catch(Exception e){
                 	
                 }finally {

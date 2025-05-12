@@ -3,8 +3,11 @@ package kr.hhplus.be.server.point.domain.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.SystemException;
+import jakarta.transaction.TransactionManager;
 import kr.hhplus.be.server.point.domain.model.PointDTO;
 import kr.hhplus.be.server.point.infra.redis.LettuceProvider;
+import kr.hhplus.be.server.point.interfaces.DistributedPointLock;
 import lombok.extern.slf4j.Slf4j;
 
 /*
@@ -27,25 +30,55 @@ public class PointFacadeWriterService {
 	@Autowired
 	PointWriterService pointWriterService;
 	
+	@Autowired
+	TransactionManager transactionManager;
+	
+//	public void charge(PointDTO pointDTO) {
+//		/*
+//		 * redis에서 userId 유무를 확인하여
+//		 * 있으면 트랜잭션을 중단합니다.
+//		 * */
+//		if(lettuceProvider.lock(pointDTO.getUserId())) {
+//			log.info("lock이 있다면 트랜잭션을 아예 중단합니다.");
+//			try {
+//				transactionManager.rollback();
+//			} catch (IllegalStateException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (SecurityException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (SystemException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}else {
+//			/*
+//			 * 없을 경우에 트랜잭션을 진행합니다.
+//			 * */
+//			try {
+//				/*
+//				 * 트랜잭션 전에 분산락 설정
+//				 * */
+//				lettuceProvider.lock(pointDTO.getUserId());
+//				pointWriterService.charge(pointDTO);
+//			} finally {
+//				/*
+//				 * 트랜잭션 진행 후 분산락 해제
+//				 * */
+//				lettuceProvider.unlock(pointDTO.getUserId());
+//			}
+//		}
+//		
+//	}
+	
+	/*
+	 * 방안 1 : redis 도메인에서 포인트 충전 서비스를 호출한다.
+	 * - 가장 안전한 방법일 수 있지만 어노테이션을 우회하여 사용하는 느낌이고
+	 * - distribution lock 어노테이션을 사실상 만들 이유가 없어지므로 굳이라는 생각이 듦
+	 * */
+	@DistributedPointLock(key = "#pointDTO.getUserId()")
 	public void charge(PointDTO pointDTO) {
-		/*
-		 * redis에서 userId 유무를 확인하여
-		 * 있으면 3초동안 계속 요청하고, 없으면 포인트를 충전한다.
-		 * */
-		while(!lettuceProvider.lock(pointDTO.getUserId())) {
-			log.info("spin lock은 주기적으로 redis에 요청합니다. redis 부하를 줄일 수 있는 방안 중 하나입니다.");
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		try {
-			pointWriterService.charge(pointDTO);
-		} finally {
-			lettuceProvider.unlock(pointDTO.getUserId());
-		}
+		pointWriterService.charge(pointDTO);
 	}
 }
