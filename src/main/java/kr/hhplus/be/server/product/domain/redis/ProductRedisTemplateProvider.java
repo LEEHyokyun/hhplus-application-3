@@ -35,4 +35,5 @@ public class ProductRedisTemplateProvider {
 		
 		return zSetOps.reverseRange(ProductEnum.HOT_SALE_PRODUCT.key(), sIndex, eIndex);
 	}
+	
 }
