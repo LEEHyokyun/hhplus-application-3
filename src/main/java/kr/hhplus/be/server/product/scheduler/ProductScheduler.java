@@ -5,7 +5,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import kr.hhplus.be.server.product.domain.model.ProductEnum;
+import kr.hhplus.be.server.common.key.ProductEnum;
 
 @Component
 public class ProductScheduler {

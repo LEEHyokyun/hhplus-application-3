@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 
-import kr.hhplus.be.server.product.domain.model.ProductEnum;
+import kr.hhplus.be.server.common.key.ProductEnum;
 
 /*
  * Redis Sorted Set 자료구조에 접근하여 
