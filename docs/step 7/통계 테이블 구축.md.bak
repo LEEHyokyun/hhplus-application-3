@@ -1,0 +1,8 @@
+## 개요
+- TOBE : 이번 과제의 핵심은 통계테이블을 구성하지 않고도, Redis 자료구조를 활용하여 데이터 저장 및 인기상품 조회를 구현하는 것입니다.
+- ASIS : Redis에서 조회해올 3일 간의 인기상품을 통계테이블로부터 추출하기 위한 테이블 설계를 진행하였습니다.
+
+## 자료
+- [이번 과제에서는 불필요] Redis에 product Id와 Ranking을 저장하기 위한 통계 테이블
+
+[통계테이블 ERD](https://docs.google.com/presentation/d/1NbSSjxUlm5GjUiQSelRKdRTACJMorQl-6aU5EponWhs/edit#slide=id.g34af6f3038f_0_23)
