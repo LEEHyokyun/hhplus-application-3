@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import kr.hhplus.be.server.common.key.ProductEnum;
 import kr.hhplus.be.server.order.application.OrderMapper;
 import kr.hhplus.be.server.order.domain.model.OrderDTO;
+import kr.hhplus.be.server.order.domain.redis.OrderRedisTemplateProvider;
 import kr.hhplus.be.server.order.infra.jpa.OrderWriterRepository;
 import kr.hhplus.be.server.point.domain.model.PointDTO;
 import kr.hhplus.be.server.point.domain.service.PointWriterService;
@@ -25,6 +27,9 @@ public class OrderWriterFacadeService {
 	
 	@Autowired
 	private OrderWriterRepository orderWriterRepository;
+	
+	@Autowired
+	private OrderRedisTemplateProvider orderRedisTemplateProvider;
 	
 	public void orderPay(OrderDTO orderDTO) throws Exception {
 		
@@ -49,6 +54,24 @@ public class OrderWriterFacadeService {
 		* pointWriterService.use(pointDTO);
 		*/
 		
-		orderWriterRepository.orderpay(orderDTO);
+		/*
+		 * 인기상품조회를 위해
+		 * 주문 후 redis ranking 데이터를 누적
+		 * 주문량 = score
+		 * */
+		//orderWriterRepository.orderpay(orderDTO);
+		
+		/*
+		 * 학습목적으로 주문 메인로직을 
+		 * order, charge 서비스 호출로 분리
+		 * */
+		orderWriterService.order(orderDTO);
+		pointWriterService.charge(orderMapper.toPointDomainFromOrderDomain(orderDTO));
+		
+		/*
+		 * 주문이 성공하였을때만 누적하도록 하며,
+		 * 성공하지 못하였다면 Ranking 정보는 누적하지 않습니다.
+		 * */
+		orderRedisTemplateProvider.setProductRanking(ProductEnum.HOT_SALE_PRODUCT.key() , orderDTO.getProductId(), orderDTO.getOrderQuantity());
 	}
 }
