@@ -59,7 +59,15 @@ public class OrderWriterFacadeService {
 		 * 주문 후 redis ranking 데이터를 누적
 		 * 주문량 = score
 		 * */
-		orderWriterRepository.orderpay(orderDTO);
+		//orderWriterRepository.orderpay(orderDTO);
+		
+		/*
+		 * 학습목적으로 주문 메인로직을 
+		 * order, charge 서비스 호출로 분리
+		 * */
+		orderWriterService.order(orderDTO);
+		pointWriterService.charge(orderMapper.toPointDomainFromOrderDomain(orderDTO));
+		
 		/*
 		 * 주문이 성공하였을때만 누적하도록 하며,
 		 * 성공하지 못하였다면 Ranking 정보는 누적하지 않습니다.
