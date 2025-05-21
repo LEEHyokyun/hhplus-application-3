@@ -6,7 +6,7 @@ package kr.hhplus.be.server.event.order.object;
  * */
 public class OrderCommitEvent {
 	//order Id
-	private final Long orderId;
+	private final Long productId;
 	
 	//user Id
 	private final Long orderQuantity;
@@ -14,8 +14,8 @@ public class OrderCommitEvent {
 	/*
 	 * 생성자 주입
 	 * */
-	public OrderCommitEvent(Long orderId, Long orderQuantity) {
-		this.orderId = orderId;
+	public OrderCommitEvent(Long productId, Long orderQuantity) {
+		this.productId = productId;
 		this.orderQuantity = orderQuantity;
 	}
 	
@@ -23,8 +23,8 @@ public class OrderCommitEvent {
 	 * Event 객체에서 
 	 * 주문정보와 사용자정보를 전달받기 위함
 	 * */
-	public Long getOrderId() {
-		return this.orderId;
+	public Long getProductId() {
+		return this.productId;
 	}
 	
 	public Long getOrderQuantity() {

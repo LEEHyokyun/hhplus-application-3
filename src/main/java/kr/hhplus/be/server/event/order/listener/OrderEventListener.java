@@ -41,7 +41,7 @@ public class OrderEventListener {
 		 * 주문이 성공하였을때만
 		 * 랭킹 정보를 누적하는 orderRedisTemplateProvider를 동작하도록 구성합니다.
 		 * */
-		orderRedisTemplateProvider.setProductRanking(ProductEnum.HOT_SALE_PRODUCT.key(), event.getOrderId(), event.getOrderQuantity());
+		orderRedisTemplateProvider.setProductRanking(ProductEnum.HOT_SALE_PRODUCT.key(), event.getProductId(), event.getOrderQuantity());
     }
 	
 	/*
