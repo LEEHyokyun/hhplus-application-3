@@ -1,7 +1,0 @@
-## 개요
-- Spring 프레임워크에서 제공하는 Event를 활용하여 구독/발행 동작원리와 구성요소 등을 학습하였습니다.
-
-## 자료
-- [통계 테이블을 구성하였지만 결과적으로 이번 과제에서는 불필요] Redis에 product Id와 Ranking을 저장하기 위한 통계 테이블
-
-[통계테이블 ERD](https://docs.google.com/presentation/d/1NbSSjxUlm5GjUiQSelRKdRTACJMorQl-6aU5EponWhs/edit#slide=id.g34af6f3038f_0_23)
