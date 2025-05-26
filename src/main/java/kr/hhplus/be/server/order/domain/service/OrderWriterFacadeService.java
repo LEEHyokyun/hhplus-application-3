@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.common.key.ProductEnum;
-import kr.hhplus.be.server.event.order.object.OrderCommitEvent;
 import kr.hhplus.be.server.order.application.OrderMapper;
+import kr.hhplus.be.server.order.domain.model.OrderCommitEvent;
 import kr.hhplus.be.server.order.domain.model.OrderDTO;
 import kr.hhplus.be.server.order.domain.redis.OrderRedisTemplateProvider;
 import kr.hhplus.be.server.order.infra.jpa.OrderWriterRepository;

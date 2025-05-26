@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.event.order.object;
+package kr.hhplus.be.server.order.domain.model;
 
 /*
  * 주문까지 COMMIT 완료 시

@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.event.order.listener;
+package kr.hhplus.be.server.order.event;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,7 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import kr.hhplus.be.server.common.key.ProductEnum;
-import kr.hhplus.be.server.event.order.object.OrderCommitEvent;
+import kr.hhplus.be.server.order.domain.model.OrderCommitEvent;
 import kr.hhplus.be.server.order.domain.redis.OrderRedisTemplateProvider;
 import lombok.extern.slf4j.Slf4j;
 
