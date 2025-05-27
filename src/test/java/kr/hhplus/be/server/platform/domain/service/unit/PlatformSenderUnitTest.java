@@ -25,7 +25,8 @@ public class PlatformSenderUnitTest {
 		 * - 테스트에 사용할 변수 및 입력값을 정의한다.
 		 * - 동작을 확인하기 위한 Mokito 정의도 포함(Database(Repository)의 객체를 Mokito화하여 사용)
 		 * */
-		PlatformDTO platformDTO = new PlatformDTO();
+		//PlatformDTO platformDTO = new PlatformDTO();
+		long orderId = 1L;
 		
 		/*
 		 * when
@@ -33,7 +34,7 @@ public class PlatformSenderUnitTest {
 		 * - 동작에 따른 상태 변화를 기억하거나, 대조군으로 활용하기 위한 과정이다.
 		 * - 검증 대상의 동작 하나만 기술한다.
 		 * */
-		platformSenderService.sendData(platformDTO);
+		platformSenderService.sendData(String.valueOf(orderId));
 		
 		/*
 		 * Then

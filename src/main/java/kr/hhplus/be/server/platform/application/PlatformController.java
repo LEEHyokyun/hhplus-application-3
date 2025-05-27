@@ -18,10 +18,21 @@ public class PlatformController {
 	@Autowired
 	PlatformSenderService platformSenderService;
 	
+	/*
 	@PostMapping("/platform")
 	PlatformResponseDTO<PlatformDTO> sendData(@RequestBody PlatformDTO platformDTO){
 		platformSenderService.sendData(platformDTO);
 		return new PlatformResponseDTO<PlatformDTO>(HttpStatus.OK, "OK", platformDTO);
 	}
+	*/
 	
+	/*
+	 * 컨슈머 메시지 발행이 정상적으로 이루어질 수 있도록
+	 * 전달받는 메시지 형태를 String 형태로 구성합니다.
+	 * */
+	@PostMapping("/platform")
+	PlatformResponseDTO<String> sendData(String orderId){
+		platformSenderService.sendData(orderId);
+		return new PlatformResponseDTO<String>(HttpStatus.OK, "OK", orderId);
+	}
 }
