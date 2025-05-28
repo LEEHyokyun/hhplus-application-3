@@ -1,7 +1,9 @@
 package kr.hhplus.be.server.platform.service;
 
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -38,12 +40,27 @@ public class PlatformSenderService {
 	 * platform consumer group에 메시지를 발행한 프로듀서에 반응하는 리스너입니다.
 	 * 
 	 * */
+	/*
 	@KafkaListener(topics="platform", groupId="platform")
 	public void sendData(String orderId) {
 		log.info("*********************");
 		log.info("데이터 외부 전송 mock API");
 		log.info("주문 정보를 전송합니다 : {}", orderId);
-		log.info("주문 세부 정보를 전송합니다 : {}", orderReaderRepository.findById(Long.valueOf(orderId)));
+		log.info("*********************");
+	}
+	*/
+	
+	/*
+	 * 기존 단순 문자열 메시지를 받는 과정에서
+	 * record 형태로 메시지를 받도록 하여 동적인 형태로 전달받도록 구성합니다.
+	 * "consume"하는 형태와 "실제 처리 부분을 분리하여 작성"
+	 * 
+	 * */
+	@KafkaListener(topics="platform", groupId="platform")
+	public void sendData(String orderId) {
+		log.info("*********************");
+		log.info("데이터 외부 전송 mock API");
+		log.info("주문 정보를 전송합니다 : {}", orderId);
 		log.info("*********************");
 	}
 }

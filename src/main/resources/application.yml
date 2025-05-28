@@ -6,6 +6,8 @@ spring:
 		auto-offset-reset: earliest
 		key-deserializer: org.apache.kafka.common.serialization.StringDeserializer # Kafka 메시지 key 역직렬화(*1단계 - 단순 문자열)
 		value-deserializer: org.apache.kafka.common.serialization.StringDeserializer # Kafka 메시지의 value를 역직렬화(*1단계 - 단순 문자열)
+		enable-auto-commit: false #offset 유실을 방지하기 위해 수동커밋으로 변경
+		max-poll-interval-ms: 60000  # 1분안에 후행 서비스 처리를 못하면 실패로 판단하고 메시지를 재전송함
 	producer:
 		bootstrap-servers: localhost:9092 # Kafka 클러스터(브로커)의 주소
 		key-serializer: org.apache.kafka.common.serialization.StringSerializer  # Kafka 메시지 key 역직렬화(*1단계 - 단순 문자열)
