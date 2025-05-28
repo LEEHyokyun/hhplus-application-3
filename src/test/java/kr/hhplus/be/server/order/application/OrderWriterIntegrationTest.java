@@ -1,5 +1,8 @@
 package kr.hhplus.be.server.order.application;
 
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
+
 import java.sql.Timestamp;
 
 import javax.sound.midi.Patch;
@@ -21,10 +24,12 @@ import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.order.domain.entity.Order;
 import kr.hhplus.be.server.order.domain.model.OrderDTO;
 import kr.hhplus.be.server.order.domain.model.OrderResponseDTO;
+import kr.hhplus.be.server.order.domain.redis.OrderRedisTemplateProvider;
+import kr.hhplus.be.server.order.domain.service.OrderWriterFacadeService;
 import kr.hhplus.be.server.order.domain.service.OrderWriterService;
+import kr.hhplus.be.server.platform.service.PlatformSenderService;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
 public class OrderWriterIntegrationTest {
 		
@@ -34,26 +39,29 @@ public class OrderWriterIntegrationTest {
 	 	@Autowired  
 	    private MockMvc mockMvc;  
 
-	    @MockBean  
-	    private OrderWriterService orderWriterService; 
+	    @Autowired
+	    private OrderWriterFacadeService orderWriterFacadeService;
+	    
+	    @Autowired
+		private OrderRedisTemplateProvider orderRedisTemplateProvider;
+	    
+	    @Autowired
+	    private PlatformSenderService platformSenderService;
 
-
-	    @DisplayName("[주문결제 통합테스트] 주문결제를 요청하면 정상적인 트랜잭션 수행 및 성공 응답을 반환한다")  
+	    @DisplayName("[주문결제 통합테스트] 주문결제 파사드 서비스를 호출(실제 컨텍스트 호출)시 이벤트리스너에 따라 Redis와 Kafka 후행 동작을 진행한다.")  
 	    @Test  
 	    void ifUserCreateRecipeShouldComplete() throws Exception {  
 
 	        // Given  
 	        OrderDTO orderDTO = this.orderDTO();
-	        Order orderEntity = Order.standardOrderEntityOf(orderDTO.getOrderId(), orderDTO.getProductId(), orderDTO.getUserId(), orderDTO.getOrderQuantity(), Timestamp.valueOf(String.valueOf(System.currentTimeMillis())), Timestamp.valueOf(String.valueOf(System.currentTimeMillis())));
+	        //Order orderEntity = Order.standardOrderEntityOf(orderDTO.getOrderId(), orderDTO.getProductId(), orderDTO.getUserId(), orderDTO.getOrderQuantity(), Timestamp.valueOf(String.valueOf(System.currentTimeMillis())), Timestamp.valueOf(String.valueOf(System.currentTimeMillis())));
 	         
 	        // Then  
-	        given(orderWriterService.order(orderDTO)).willReturn(OrderResponseDTO.builder());  
+	        orderWriterFacadeService.orderPay(orderDTO);
 
 	        // Then  
-	        mockMvc.perform(post("/order/orderpay"))  
-	                        .contentType(MediaType.APPLICATION_JSON)  
-	                        .content(new ObjectMapper().writeValueAsString(orderDTO)))  
-	                .andExpect(HttpStatus.OK); // 응답 상태 코드가 200 OK인지 확인한다.  
+	        verify(orderRedisTemplateProvider, atLeastOnce());
+	        verify(platformSenderService, atLeastOnce());
 	        
 	    }  
 	    

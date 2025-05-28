@@ -70,6 +70,9 @@ dependencies {
     implementation("org.redisson:redisson-spring-boot-starter:3.27.0")
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.boot:spring-boot-starter-cache")
+    
+    //kafka
+    implementation("org.springframework.kafka:spring-kafka")
 }
 
 tasks.withType<Test> {

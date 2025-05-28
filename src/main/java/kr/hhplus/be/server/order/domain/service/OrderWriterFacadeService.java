@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.common.key.ProductEnum;
+import kr.hhplus.be.server.config.kafka.KafkaProducer;
 import kr.hhplus.be.server.order.application.OrderMapper;
 import kr.hhplus.be.server.order.domain.model.OrderCommitEvent;
 import kr.hhplus.be.server.order.domain.model.OrderDTO;
@@ -35,6 +36,9 @@ public class OrderWriterFacadeService {
 	
 	@Autowired
 	private ApplicationEventPublisher applicationEventPublisher;
+	
+	@Autowired
+	private KafkaProducer kafkaProducer;
 	
 	public void orderPay(OrderDTO orderDTO) throws Exception {
 		
@@ -74,6 +78,17 @@ public class OrderWriterFacadeService {
 		 * */
 		orderWriterService.order(orderDTO);
 		pointWriterService.charge(orderMapper.toPointDomainFromOrderDomain(orderDTO));
+		
+		/*
+		 * 외부 플랫폼으로 데이터 전송 - Kafka Event Producer / Consumer를 통해 처리
+		 * 주문 정보를 전송하기 위해 주문 ID 문자열을 메시지로 발행합니다.
+		 * 내부적으로 정의한 topic대로 메시지 발행이 진행됩니다.
+		 * */
+		kafkaProducer.publish(String.valueOf(orderDTO.getOrderId()));
+		
+		/*
+		 * Redis Ranking 누적 - Application Event Publisher를 통해 Redis로 처리
+		 * */
 		
 		/*
 		 * 후행 서비스는 OrderEventListener에서 동작하도록 구성
