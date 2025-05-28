@@ -1,0 +1,319 @@
+[33mcommit 307664ab0f4153e578839b6bf021dd6cee8241ad[m[33m ([m[1;36mHEAD -> [m[1;32mweek4-1[m[33m)[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Wed May 28 23:22:17 2025 +0900
+
+    Kafka Implementation - KafkaConsumerRuleDefiner(concurrent offset error handling)
+
+[33mcommit 8b4e8ec3280905af1c2a9020ddf8992b38e033bd[m[33m ([m[1;31morigin/week4-1[m[33m)[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Wed May 28 22:32:32 2025 +0900
+
+    Kafka Implementation 2
+
+[33mcommit 089335a7e35ffd0d61eb5d3e106953b0bc3f9f48[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Wed May 28 00:17:07 2025 +0900
+
+    OrderWriterIntegrationTest + Kafka Implementation
+
+[33mcommit 04e4103892a28358caa2ba85e180ffb61059334d[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Mon May 26 23:57:34 2025 +0900
+
+    mock API
+
+[33mcommit 6a53766bc05e9f954becbc94aae85210b4d11a01[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Mon May 26 23:29:36 2025 +0900
+
+    define scenario
+
+[33mcommit 1749f235198f1aa169758e7c68d3983607207114[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Mon May 26 23:28:03 2025 +0900
+
+    event domain append
+
+[33mcommit 9c7b3fc83ff926be91d5c4b5d9a7bcc14135b694[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Thu May 22 22:41:50 2025 +0900
+
+    OrderEventListener Unit Test
+
+[33mcommit 05f13789ecc7d8aa6ad0d13cf61299c32da5ac49[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Wed May 21 23:45:38 2025 +0900
+
+    docs
+
+[33mcommit 594294361c6dcc8ab435d37ce766558db3204937[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Wed May 21 23:41:58 2025 +0900
+
+    Event parameter amend
+
+[33mcommit 905c241219ffc4c6beae7cb52093cf66523b8062[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Wed May 21 00:05:46 2025 +0900
+
+    Order Event Publisher / Event Listener
+
+[33mcommit 46f54767617ef96384631c39c72fe1857bd4294c[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Tue May 20 00:27:28 2025 +0900
+
+    event driven programming : scenario
+
+[33mcommit 389cad5396b16aac4b51713ac3d5ce6ec7bad11b[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Sun May 18 19:57:23 2025 +0900
+
+    seperate 2 facade services for assignments
+
+[33mcommit 9d59c7084b5d752c049d89a831f34cdaf08048aa[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Thu May 15 23:10:29 2025 +0900
+
+    order domain : update score when ordering product / integration test
+
+[33mcommit dd0a267e7e5f579969128d8c238129d3af43da4e[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Thu May 15 22:46:54 2025 +0900
+
+    order domain : orderRedisTemplateProvider / unit test
+
+[33mcommit c097c242e5ae5d0d489cf9d47e6b52771d42154a[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Thu May 15 19:42:42 2025 +0900
+
+    ProductEnum redefin domain
+
+[33mcommit 7aad6b65702f7dd7875bbee23c260d29408dc3b1[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Thu May 15 00:35:41 2025 +0900
+
+    product domain : Sorted Set data Evict
+
+[33mcommit 3fffe58fe2ed17435196b55b10ae748baaa8e3ab[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Thu May 15 00:21:51 2025 +0900
+
+    Product domain : search hot saled product quickly(By Redis) / Integration test
+
+[33mcommit b2c76a7db08c26cbb2c4cfe5568429253788b490[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Wed May 14 22:38:53 2025 +0900
+
+    product domain - productRedisTemplateProvider / unit test
+
+[33mcommit 4cf1a404170fd145dd79185b24913b4729c01a73[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Wed May 14 20:19:36 2025 +0900
+
+    scenario redefine : way to use redis needs to be reset
+
+[33mcommit f3baaefa611a307366a19bc24985e8b399c43195[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Wed May 14 00:10:26 2025 +0900
+
+    scenario redefine
+
+[33mcommit 02df7ed926867f337c9c5583443ea24fc8b8c730[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Tue May 13 20:09:29 2025 +0900
+
+    Scenario - hot sales product by Redis
+
+[33mcommit c4f59e9a3488cbf4b61a2c3c7c24db8260864ad4[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Fri May 2 00:26:34 2025 +0900
+
+    getLock / tryLock
+
+[33mcommit 0cb8bb935a807dd0d337c5ab47438f336ad582da[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Thu May 1 18:49:37 2025 +0900
+
+    docs
+
+[33mcommit c319592d24c5782ad2a32ba93118b62a5e22d411[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Wed Apr 30 23:41:12 2025 +0900
+
+    docs
+
+[33mcommit 46eb8768da7ff0569a5d6d0d0fbeb3f5e75ef55f[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Wed Apr 30 23:11:13 2025 +0900
+
+    redis #3 : redisson lock
+
+[33mcommit b23dd3f50c14d242132ea380b1b6838603383788[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Wed Apr 30 00:29:09 2025 +0900
+
+    BRD redefinition for Redission
+
+[33mcommit 356bdfa1bc679c10da56bbf87162cbd44fb782b8[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Wed Apr 30 00:09:37 2025 +0900
+
+    test name changed : spin lock test
+
+[33mcommit 2ee6934d2de2ad2a549e117c9a1a864deae3d8a7[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Tue Apr 29 23:51:09 2025 +0900
+
+    redis #2 : simple lock
+
+[33mcommit 483c7a34cb78e7addf51e8167d46a214a2bd8f3b[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Tue Apr 29 23:35:55 2025 +0900
+
+    amend BRD
+
+[33mcommit d52fcc840bccb46d11e814c6f17b59e651f4f259[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Tue Apr 29 02:04:37 2025 +0900
+
+    BRD / redis #1 : lettuce
+
+[33mcommit 78869732c7896d2cee42d10d0f6f1c03ea4b07a9[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Thu Apr 24 00:18:41 2025 +0900
+
+    filter/interceptor docs
+
+[33mcommit b76b8fa6794c43b486882d2d783be46f0adc7c63[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Thu Apr 24 00:11:09 2025 +0900
+
+    interceptor - preHandle/postHandle/afterCompletion
+
+[33mcommit 88ed10fdab022231fa2711d0c88ef64554b1e2b4[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Thu Apr 24 00:05:38 2025 +0900
+
+    filter - URLChecker/AuthenticationChecker
+
+[33mcommit 800f3e5d80110b51efa1616ccd16246a7576d8f8[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Tue Apr 22 01:30:09 2025 +0900
+
+    concurrency #3 - mybatis
+
+[33mcommit f7694c7c345def28f81b61aaf84617407301dfaf[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Tue Apr 22 01:01:34 2025 +0900
+
+    concurrency #2 - optimistic lock
+
+[33mcommit a5085cdcc65dbf4002e358466bfc85692a373049[m
+Merge: 4b76136 5e814aa
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Tue Apr 22 00:40:30 2025 +0900
+
+    Merge branch 'week4-1' of https://github.com/LEEHyokyun/hhplus-application-3 into week4-1
+
+[33mcommit 4b7613658c60ac4446ab6dd60218d3fece1522f6[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Tue Apr 22 00:39:32 2025 +0900
+
+    concurreny #1 - pessimistic write
+
+[33mcommit 5e814aa2373d00a1ee281605f9d1377e9eb49274[m
+Merge: a1d2c88 b280a97
+Author: LEEHyokyun <77184495+LEEHyokyun@users.noreply.github.com>
+Date:   Sun Apr 20 20:57:24 2025 +0900
+
+    Merge branch 'master' into week4-1
+
+[33mcommit a1d2c88ad0d21ebd5c28fb348e521188e2663c92[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Thu Apr 17 22:38:10 2025 +0900
+
+    order pay redefine : all business logics in repository layer
+
+[33mcommit 965e7744aee43045be169733983cde53f3dbfe97[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Thu Apr 17 02:16:09 2025 +0900
+
+    point concurrency unit test case
+
+[33mcommit 1438ca9770096f417ab266f892317121aa5d2287[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Thu Apr 17 02:01:58 2025 +0900
+
+    order-pay(integration)
+
+[33mcommit 571788fad89d02af96d53e2dc22662a7e6c4ebed[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Thu Apr 17 01:27:50 2025 +0900
+
+    order(unit)
+
+[33mcommit 19823f30289f946ff1256b88b67f0233f988ebef[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Thu Apr 17 00:23:26 2025 +0900
+
+    product search/ hot saled product search
+
+[33mcommit 40fc1d7d07567adc03f69d1cd23ab0136ba101cf[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Wed Apr 16 01:39:23 2025 +0900
+
+    re define BRD
+
+[33mcommit 1c54e3be0cefba18557d3f2f4d9f6a9630d31f28[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Wed Apr 16 01:36:08 2025 +0900
+
+    point search/use/charge
+
+[33mcommit 42407571a5b05151130f89d531d27160824f11e1[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Tue Apr 15 02:06:35 2025 +0900
+
+    test init + point charge implementation
+
+[33mcommit b280a9794523adb442d45b128c55849726107514[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Mon Apr 14 22:06:55 2025 +0900
+
+    test #2
+
+[33mcommit 524adfa54386f3d232f3013587753f2d3ffeca9d[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Mon Apr 14 22:05:45 2025 +0900
+
+    test #1
+
+[33mcommit c34b1cc1cf61323b212dc845e8e3bc0dc05fc67e[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Sun Apr 13 22:11:44 2025 +0900
+
+    re defined ERD
+
+[33mcommit 525dff5d1bb1abe613cc60abddf462a61548ad54[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Sun Apr 13 21:22:23 2025 +0900
+
+    BRD re definition
+
+[33mcommit 4f070f854060f39fb6f1e4eca2d33ea14758f940[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Sun Apr 13 22:11:44 2025 +0900
+
+    re defined ERD
+
+[33mcommit ef15a5199f3b14ed67e5ec7d71f7c68df351d3cb[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Sun Apr 13 21:22:23 2025 +0900
+
+    BRD re definition
+
+[33mcommit 9210b1e1695ef7a319602d5cefa9321b494e5a85[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: leehyokyun <gyrbs22@gmail.com>
+Date:   Sun Apr 13 20:32:47 2025 +0900
+
+    init
