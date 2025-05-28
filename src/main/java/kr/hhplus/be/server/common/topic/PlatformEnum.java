@@ -4,7 +4,8 @@ package kr.hhplus.be.server.common.topic;
  * Platform Key값을 Enum으로 정의합니다.
  * */
 public enum PlatformEnum {
-	PLATFORM("PLATFORM")
+	PLATFORM("PLATFORM"),
+	DLQ("DLQ")
 	;
 	
 	private final String topic;
